@@ -4,15 +4,24 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using techtasticwelcome.Models;
 
 namespace techtasticwelcome.Controllers
 {
     public class HomeController : Controller
     {
+        private IConfiguration _configuration { get; }
+
+        public HomeController (IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public IActionResult Index()
         {
-            return View();
+            var model = _configuration["Greeting"];
+            return View("Index", model);
         }
 
         public IActionResult About()
