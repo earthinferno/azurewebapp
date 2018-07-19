@@ -21,18 +21,18 @@ namespace techtasticwelcome.Services
         public async Task<string> SaveImage(Stream imageStream)
         {
             var imageId = Guid.NewGuid().ToString();
-            //var blob = getBlob(imageId);
-            var container = blobClient.GetContainerReference("images");
-            var blob = container.GetBlockBlobReference(imageId);
+            var blob = getBlob(imageId);
+            //var container = blobClient.GetContainerReference("images");
+            //var blob = container.GetBlockBlobReference(imageId);
             await blob.UploadFromStreamAsync(imageStream);
             return imageId;
         }
 
-        //public CloudBlockBlob getBlob(string imageId)
-        //{
-        //    var container = blobClient.GetContainerReference("images");
-        //    return container.GetBlockBlobReference(imageId);
-        //}
+        public CloudBlockBlob getBlob(string imageId)
+        {
+            var container = blobClient.GetContainerReference("images");
+            return container.GetBlockBlobReference(imageId);
+        }
 
         public string UriFor(string imageId)
         {
@@ -43,9 +43,9 @@ namespace techtasticwelcome.Services
                 SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(75)
             };
 
-            //var blob = getBlob(imageId);
-            var container = blobClient.GetContainerReference("images");
-            var blob = container.GetBlockBlobReference(imageId);
+            var blob = getBlob(imageId);
+            //var container = blobClient.GetContainerReference("images");
+            //var blob = container.GetBlockBlobReference(imageId);
             var sas = blob.GetSharedAccessSignature(sasPolicy);
             return $"{baseUri}images/{imageId}{sas}";
         }
