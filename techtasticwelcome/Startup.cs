@@ -36,6 +36,7 @@ namespace techtasticwelcome
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<CourseStore>();
+            services.AddTransient<ImageStore>();
 
             services.AddMvc();
         }
