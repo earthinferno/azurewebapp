@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using techtasticwelcome.Models;
+using techtasticwelcome.Models.Images;
 using techtasticwelcome.Services;
 
 namespace techtasticwelcome.Controllers
@@ -20,9 +21,11 @@ namespace techtasticwelcome.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var model = new ImagesModel { ImagesUri = theImageStore.GetBlobUris("images") };
+            return View(model);
         }
 
+        [Authorize]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Upload(IFormFile image)
         {
@@ -37,6 +40,7 @@ namespace techtasticwelcome.Controllers
             }
             return View();
         }
+
 
         [HttpGet("{imageId}")]
         public ActionResult Show(string imageId)

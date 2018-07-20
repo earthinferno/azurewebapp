@@ -22,8 +22,6 @@ namespace techtasticwelcome.Services
         {
             var imageId = Guid.NewGuid().ToString();
             var blob = getBlob(imageId);
-            //var container = blobClient.GetContainerReference("images");
-            //var blob = container.GetBlockBlobReference(imageId);
             await blob.UploadFromStreamAsync(imageStream);
             return imageId;
         }
@@ -39,15 +37,50 @@ namespace techtasticwelcome.Services
             var sasPolicy = new SharedAccessBlobPolicy
             {
                 Permissions = SharedAccessBlobPermissions.Read,
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-75),
-                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(75)
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-15),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15)
             };
 
             var blob = getBlob(imageId);
-            //var container = blobClient.GetContainerReference("images");
-            //var blob = container.GetBlockBlobReference(imageId);
             var sas = blob.GetSharedAccessSignature(sasPolicy);
             return $"{baseUri}images/{imageId}{sas}";
+        }
+
+        public ICollection<string> GetBlobUris(string blobContainerName)
+        {
+            return GetBlobUrisAsync(blobContainerName).Result;
+        }
+
+        public async Task<ICollection<string>> GetBlobUrisAsync(string blobContainerName)
+        {
+            BlobContinuationToken continuationToken = null;
+            var sasPolicy = GetSasPolicy();
+            var container = blobClient.GetContainerReference(blobContainerName);
+            var sas = container.GetSharedAccessSignature(sasPolicy);
+
+            //var results = new List<IListBlobItem>();
+            var results = new List<string>();
+            do
+            {
+                var response = await container.ListBlobsSegmentedAsync(continuationToken);
+                continuationToken = response.ContinuationToken;
+                foreach (IListBlobItem blob in response.Results)
+                {
+                    results.Add($"{baseUri}{blob.Uri}{sas}");
+                }
+            }
+            while (continuationToken != null);
+            return results;
+        }
+
+        private SharedAccessBlobPolicy GetSasPolicy()
+        {
+            return new SharedAccessBlobPolicy
+            {
+                Permissions = SharedAccessBlobPermissions.Read,
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-15),
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(15)
+            };
         }
     }
 }
