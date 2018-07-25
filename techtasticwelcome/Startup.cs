@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using techtasticwelcome.Data;
 using techtasticwelcome.Models;
 using techtasticwelcome.Services;
+using techtasticwelcome.Helpers;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 
 namespace techtasticwelcome
 {
@@ -37,6 +40,15 @@ namespace techtasticwelcome
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<CourseStore>();
             services.AddTransient<ImageStore>();
+            services.AddScoped<IAzureBlobStorage>(factory =>
+            {
+                var settings = new AzureBlobSettings(
+                    storageAccount: Configuration["Blob_StorageAccount"],
+                    storageKey: Configuration["Blob_StorageKey"],
+                    containerName: Configuration["Blob_ContainerName"]);
+                var storageAccount = new CloudStorageAccount(new StorageCredentials(settings.StorageAccount, settings.StorageKey), false);
+                return new AzureBlobStorage(storageAccount, settings);
+            });
 
             services.AddMvc();
         }
