@@ -49,8 +49,6 @@ namespace techtasticwelcome.Helpers
                     list.Add(new AzureBlobItem(item));
                 }
             } while (token != null);
-
-            //return list.OrderBy(i => i.Folder).ThenBy(i => i.BlobName).ToList();
             return list;
         }
 
@@ -78,12 +76,6 @@ namespace techtasticwelcome.Helpers
 
         public async Task<MemoryStream> DownloadAsync(string blobName)
         {
-            //var blob = await GetBlockBlobAsync(blobName);
-            //using (var stream = new MemoryStream())
-            //{
-            //    await blob.DownloadToStreamAsync(stream);
-            //    return stream;
-            //}
             throw new ApplicationException("Please access the storage resource directly.");
         }
 
@@ -114,15 +106,10 @@ namespace techtasticwelcome.Helpers
 
         public async Task<List<string>> GetBlobUris(string baseUri)
         {
-            var sas = getSAS();
+            var sasPolicy = getSAS();
             var list = await GetBlobListAsync();
-            //return list.Where(i => !string.IsNullOrEmpty(i.Folder))
-            //    .Select(i => $"{baseUri}images/{i.BlobName}{sas}")
-            //    .Distinct()
-            //    .OrderBy(i => i)
-            //    .ToList();
-            return list.Where(i => !string.IsNullOrEmpty(i.BlobName))
-                .Select(i => $"{baseUri}images/{i.BlobName}{sas}")
+            return list.Where(i => !string.IsNullOrEmpty(i.BlobName) && i.IsBlockBlob)
+                .Select(i => $"{baseUri}images/{i.BlobName}{i.BlockBlobSharedAccessSignature}")
                 .Distinct()
                 .OrderBy(i => i)
                 .ToList();
