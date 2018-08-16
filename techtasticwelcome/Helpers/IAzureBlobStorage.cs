@@ -6,7 +6,7 @@ namespace techtasticwelcome.Helpers
 {
     public interface IAzureBlobStorage
     {
-        Task<MemoryStream> DownloadAsync(string blobName);
+        //Task<MemoryStream> DownloadAsync(string blobName);
         Task<List<AzureBlobItem>> ListAsync();
         Task<List<string>> ListFolderAsync();
         Task UploadAsync(string blobName, Stream stream);

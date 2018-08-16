@@ -3,19 +3,22 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Upload an Image</h2>
+<h2>Upload a New Image</h2>
+<form method="post" enctype="multipart/form-data" asp-action="Upload">
+    <input type="file" name="image" />
+    <hr />
+    <input class="btn btn-primary" type="submit" value="Go!" />
+</form>
+
+<p />
+<h2>Your Images</h2>
 
 @foreach (var blobUri in Model.ImagesUri)
 {
-    <tr><td><img src="@blobUri" /></td></tr>
+    <tr><td><input type="checkbox" /></td><td><img src="@blobUri" /></td></tr>
 
 }
 
-<form method="post" enctype="multipart/form-data" asp-action="Upload">
-    <input type="file" name="image"/>
-    <hr/>
-    <input class="btn btn-primary" type="submit" value="Go!" />
-</form>
 
 
 

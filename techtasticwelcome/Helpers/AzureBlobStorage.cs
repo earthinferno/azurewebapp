@@ -74,10 +74,10 @@ namespace techtasticwelcome.Helpers
             await blob.UploadFromStreamAsync(stream);
         }
 
-        public async Task<MemoryStream> DownloadAsync(string blobName)
-        {
-            throw new ApplicationException("Please access the storage resource directly.");
-        }
+        //public async Task<MemoryStream> DownloadAsync(string blobName)
+        //{
+        //    throw new ApplicationException("Please access the storage resource directly.");
+        //}
 
         public async Task<List<AzureBlobItem>> ListAsync()
         {
