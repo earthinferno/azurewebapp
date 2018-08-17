@@ -1,9 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
-    "techtasticstorage": "DefaultEndpointsProtocol=https;AccountName=techtasticstorage;AccountKey=eDLTv59XKOBX7nPSYmLUQrToWbftjhtL+t+TL5AXGSI/btjLM1pUbnZBdRB3j8FBa3fASLLpngyfMj3ByvVTuw==;EndpointSuffix=core.windows.net",
-    "ttdb": "AccountEndpoint=https://techtasticdb.documents.azure.com:443/;AccountKey=cqQVpHAXHJmEB3hbbtSAlCvSRVLESYPIZY4gd2bOCLjytTbSne0TFZljYm5WhRoia7yXlF1FKOWmTSFuVAJjYg==;"
-  }
-}
