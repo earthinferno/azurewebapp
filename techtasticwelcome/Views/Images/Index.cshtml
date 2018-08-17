@@ -13,9 +13,10 @@
 <p />
 <h2>Your Images</h2>
 
-@foreach (var blobUri in Model.ImagesUri)
+@foreach (var blob in Model.Images)
 {
-    <tr><td><input type="checkbox" /></td><td><img src="@blobUri" /></td></tr>
+    <tr><td><input type="checkbox" /></td><td><img src="@blob.ImageUri" /></td></tr>
+    <p>@blob.ImageAnalysis</p>
 
 }
 

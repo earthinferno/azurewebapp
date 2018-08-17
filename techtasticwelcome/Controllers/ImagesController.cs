@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using techtasticwelcome.Helpers;
 using techtasticwelcome.Models.Images;
 using techtasticwelcome.Services;
@@ -15,15 +16,33 @@ namespace techtasticwelcome.Controllers
     public class ImagesController : Controller
     {
         private readonly ImageStore _imageStore;
+        private readonly ImageAnalysisStore _imageAnalysisStore;
 
-        public ImagesController(ImageStore imageStore)
+        public ImagesController(ImageStore imageStore, ImageAnalysisStore imageAnalysisStore)
         {
             _imageStore = imageStore;
+            _imageAnalysisStore = imageAnalysisStore;
         }
 
         public IActionResult Index()
         {
-            var model = new ImagesModel { ImagesUri = _imageStore.GetImageUris() };
+            //var images = _imageStore.GetImageBlobs();
+            //var model = new ImagesModel { ImagesUri = _imageStore.GetImageUris() };
+            var model = new ImagesModel { Images = _imageStore.GetImageBlobs() };
+            foreach(var image in model.Images)
+            {
+                if (!string.IsNullOrEmpty(image.ImageName))
+                {
+                    var analysis = _imageAnalysisStore.GetImageAnalysis(image.ImageName);
+                    if (analysis != null)
+                    {
+                        image.ImageAnalysis = JsonConvert.SerializeObject(analysis,
+                                                            Formatting.Indented);
+                    }
+
+                    //image.ImageAnalysis = _imageAnalysisStore.GetImageAnalysis(image.ImageName).ToString();
+                }
+            }
             return View(model);
         }
 

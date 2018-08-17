@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using techtasticwelcome.Helpers;
+using techtasticwelcome.Models.Images;
 
 namespace techtasticwelcome.Services
 {
@@ -40,6 +41,11 @@ namespace techtasticwelcome.Services
         public List<string> GetImageUris()
         {
             return _blobStorage.GetBlobUris(_baseUri).Result;
+        }
+
+        public List<ImageModel> GetImageBlobs()
+        {
+            return _blobStorage.GetImageBlobs(_baseUri).Result;
         }
 
     }

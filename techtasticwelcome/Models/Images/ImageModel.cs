@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace techtasticwelcome.Models.Images
 {
-    public class ImagesModel
+    public class ImageModel
     {
-        //public ICollection<string> ImagesUri { get; set; }
+        public string ImageUri { get; set; }
         //public ICollection<string> ImagesAnalysis { get; set; }
-        public ICollection<ImageModel> Images { get; set; }
+        public string ImageName { get; set; }
+        public string ImageAnalysis { get; set; }
     }
 }

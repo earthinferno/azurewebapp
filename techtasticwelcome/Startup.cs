@@ -40,6 +40,7 @@ namespace techtasticwelcome
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<CourseStore>();
             services.AddTransient<ImageStore>();
+            services.AddTransient<ImageAnalysisStore>();
             services.AddScoped<IAzureBlobStorage>(factory =>
             {
                 var settings = new AzureBlobSettings(

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using techtasticwelcome.Models.Images;
 
 namespace techtasticwelcome.Helpers
 {
@@ -114,6 +115,26 @@ namespace techtasticwelcome.Helpers
                 .OrderBy(i => i)
                 .ToList();
 
+        }
+
+        public async Task<List<string>> GetBlobImageId()
+        {
+            var list = await GetBlobListAsync();
+            return list.Where(i => !string.IsNullOrEmpty(i.BlobName) && i.IsBlockBlob)
+                .Select(i => i.BlobName)
+                .Distinct()
+                .OrderBy(i => i)
+                .ToList();
+        }
+
+        public async Task<List<ImageModel>> GetImageBlobs(string baseUri)
+        {
+            var list = await GetBlobListAsync();
+            return list.Where(i => !string.IsNullOrEmpty(i.BlobName) && i.IsBlockBlob)
+                .Select(i => new ImageModel() { ImageUri = $"{baseUri}images/{i.BlobName}{i.BlockBlobSharedAccessSignature}", ImageName = i.BlobName })
+                .Distinct()
+                .OrderBy(i => i.ImageUri)
+                .ToList();
         }
 
 

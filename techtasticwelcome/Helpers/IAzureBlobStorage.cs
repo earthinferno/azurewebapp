@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using techtasticwelcome.Models.Images;
 
 namespace techtasticwelcome.Helpers
 {
@@ -12,5 +13,6 @@ namespace techtasticwelcome.Helpers
         Task UploadAsync(string blobName, Stream stream);
         Task<string> BlobUri(string baseUri, string blobName);
         Task<List<string>> GetBlobUris(string baseUri);
+        Task<List<ImageModel>> GetImageBlobs(string baseUri);
     }
 }
